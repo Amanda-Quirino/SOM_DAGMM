@@ -1,0 +1,5 @@
+numpy
+MiniSom
+torch
+scikit-learn
+pandas

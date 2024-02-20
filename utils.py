@@ -26,14 +26,14 @@ def one_hot_encoding(data, cols):
     return data
 
 def label_encoding(data, cols):
-    encode_data = data[cols]
+    encode_data = data.iloc[cols]
     encoded_data = pd.DataFrame()
     encoder = preprocessing.LabelEncoder()
     for column in encode_data:
         new_data = encoder.fit_transform(encode_data[column])
         new_data = pd.DataFrame(new_data, columns=[column])
         encoded_data = pd.concat([encoded_data, new_data], axis=1)
-    data.drop(cols, axis=1, inplace=True)
+    data.drop(encode_data, axis=1, inplace=True)
     data = pd.concat([data, encoded_data], axis=1)
     return data
 
@@ -42,7 +42,7 @@ def get_labels(data, name):
         label = data['Class']
         data.drop(['Class'], axis = 1, inplace=True)        
     if name == 'arrhythmia':
-        label = data['class']
+        label = data[len(data.columns)-1]
         label = (np.where(label == (3|4|5|7|8|9|14|15), 0, 1))
         data.drop(['class'], axis = 1, inplace=True)
     if name == 'kdd':
