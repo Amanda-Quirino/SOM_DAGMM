@@ -26,7 +26,7 @@ def one_hot_encoding(data, cols):
     return data
 
 def label_encoding(data, cols):
-    encode_data = data.iloc[cols]
+    encode_data = data.iloc[:, cols]
     encoded_data = pd.DataFrame()
     encoder = preprocessing.LabelEncoder()
     for column in encode_data:
