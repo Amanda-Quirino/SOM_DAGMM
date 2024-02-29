@@ -38,18 +38,22 @@ def label_encoding(data, cols):
     return data
 
 def get_labels(data, name):
-    if name == 'credit_card':
-        label = data['Class']
-        data.drop(['Class'], axis = 1, inplace=True)        
-    if name == 'arrhythmia':
-        label = data[len(data.columns)-1]
-        label = (np.where(label == (3|4|5|7|8|9|14|15), 0, 1))
-        data.drop(['class'], axis = 1, inplace=True)
-    if name == 'kdd':
-        label = data[41]
-        label = np.where(label == "normal", 0, 1)
-        data.drop([41], axis = 1, inplace=True) 
-    return label
+  label = []
+  if name == 'IDS2018':
+    label = data['Label']
+    label = (np.where(label == "Benign", 0, 1)) # Benigno = 0, attack = 1
+    data.drop(['Label'], axis = 1, inplace=True)        
+  if name == 'arrhythmia':
+    label = data[len(data.columns)-1]
+    label = (np.where(label == (3|4|5|7|8|9|14|15), 0, 1))
+    data.drop(['class'], axis = 1, inplace=True)
+  if name == 'kdd':
+    label = data[41]
+    label = np.where(label == "normal", 0, 1)
+    data.drop([41], axis = 1, inplace=True) 
+
+  return label
+
 
 def get_scores(y_pred, y):
     precision = precision_score(y_pred, y, average='binary')

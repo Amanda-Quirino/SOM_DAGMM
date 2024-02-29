@@ -21,6 +21,8 @@ from som_dagmm.gmm import GMM, Mixture
 from SOM import som_train, som_pred
 
 
+
+# Aqui é somente pegar as informações da linha de comando
 def parse_args():
     
     parser = argparse.ArgumentParser(description='Anomaly Detection with unsupervised methods')
@@ -39,18 +41,32 @@ save_path = os.path.join(args.dataset + "_" + args.features + "_" + args.embed)
 #read data
 # get labels from dataset and drop them if available
 
+data = pd.DataFrame()
 
-if args.dataset == 'credit_card':
-    data = load_data('data/CreditCardFraud/creditcard.csv')
+if args.dataset == 'IDS2018':
+    data_list = []  # Lista para armazenar os DataFrames a serem concatenados
+    for d in os.listdir('data/CSE-CIC-IDS2018'):
+        if d != '.ipynb_checkpoints':
+            new_data = load_data(f'data/CSE-CIC-IDS2018/{d}')
+            data_list.append(new_data)  # Adiciona o novo DataFrame à lista
+    
+    # Concatena todos os DataFrames na lista
+    data = pd.concat(data_list, ignore_index=True)
+    data.drop(['  q   q   q   Timestamp', 'Timestamp'], axis=1, inplace=True)
+    categorical_cols = []
     Y = get_labels(data, args.dataset)
+
 if args.dataset == 'arrhythmia':
     data = load_data('data/arrhythmia.csv')
     data = remove_cols(data, ['J'])
     Y = get_labels(data, args.dataset)
 if args.dataset == 'kdd':
-    names = [i for i in range(0,43)]
+    names = [i for i in range(0,43)] # Qtd de colunas, cada coluna está representada entre 0 a 42
     data = load_data('data/NSL-KDD/KDDTrain+.txt', names)
-    categorical_cols = [1,2,3,4]
+
+    data = data[(data[41] ==  "normal")]
+
+    categorical_cols = [1,2,3] # Somente as colunas 1,2,3
     Y = get_labels(data, args.dataset)
 
 #Select features
@@ -64,7 +80,6 @@ if args.embed == 'one_hot':
     data = one_hot_encoding(data, categorical_cols)
 if args.embed == 'label_encode':
     data = label_encoding(data, categorical_cols)
-
 
 # Remove columns with NA values
 data = fill_na(data)
@@ -110,6 +125,3 @@ for epoch in range(epochs):
         running_loss += loss.item()
     print(running_loss)
 torch.save(net, save_path)
-
-
-
