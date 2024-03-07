@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import precision_score, recall_score, f1_score
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 from sklearn.metrics import confusion_matrix
 from sklearn import metrics
 
@@ -56,12 +56,13 @@ def get_labels(data, name):
 
 
 def get_scores(y_pred, y):
+    accuracy = accuracy_score(y_pred, y)
     precision = precision_score(y_pred, y, average='binary')
     recall = recall_score(y_pred, y, average='binary')
     f1 = f1_score(y_pred, y, average='binary')
     fpr, tpr, thresholds = metrics.roc_curve(y, y_pred, pos_label=1)
     auc = metrics.auc(fpr, tpr)
-    return precision, recall, f1, auc
+    return accuracy, precision, recall, f1, auc
 
 def get_confusion_matrix(y_pred, y):
     tn, fp, fn, tp = confusion_matrix(y_pred, y).ravel()
