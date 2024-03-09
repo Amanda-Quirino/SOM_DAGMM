@@ -10,12 +10,16 @@ from SOM import som_train
 eps = torch.autograd.Variable(torch.FloatTensor([1.e-8]), requires_grad=False)
 
 class SOM_DAGMM(nn.Module):
-    def __init__(self, dagmm):
+    def __init__(self, dagmm, pretrained_som=None):
         super().__init__()
         self.dagmm = dagmm
+        self.pretrained_som = pretrained_som
 
     def forward(self, input):
-        som = som_train(input)
+        if self.pretrained_som is None:
+            raise ValueError("Pretrained SOM is not provided.")
+        
+        som = self.pretrained_som
         winners = [som.winner(i) for i in input]
         winners = torch.tensor([normalize_tuple(winners[i], 10) for i in range(len(winners))], dtype=torch.float32)
         return self.dagmm(input, winners)
