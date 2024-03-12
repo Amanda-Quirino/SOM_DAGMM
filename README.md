@@ -5,11 +5,11 @@ Code for Self Organizing Map assissted Deep Autoencoding gaussian Mixture Model 
         
 ## Data
 
-** Please download the datasets and save in directory named `data`. **
+** Please unzip the datasets in data.zip and save in directory named `data`. **
 
-Credit Card - https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud .\
-Arrhythmia - https://archive.ics.uci.edu/ml/datasets/arrhythmia. \
-KDD - https://www.unb.ca/cic/datasets/nsl.html
+The datasets are:
+    - CSE-CIC-IDS2018
+    - CIC-DDoS2019
 
 ## Training
 
