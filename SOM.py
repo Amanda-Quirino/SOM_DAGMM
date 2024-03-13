@@ -1,7 +1,7 @@
 import numpy as np
 from minisom import MiniSom
 
-# def som_train(data, x=10, y=10, sigma=1, learning_rate= 0.05, iters= 10000, neighborhood_function= 'gaussian'):
+#Função responsável por criar o SOM e treina-lo
 def som_train(data, x=10, y=10, sigma=1, learning_rate= 0.8, iters= 10000, neighborhood_function= 'gaussian'):
     input_len = data.shape[1]
     print("SOM training started:")
@@ -10,6 +10,7 @@ def som_train(data, x=10, y=10, sigma=1, learning_rate= 0.8, iters= 10000, neigh
     som.train_random(data, iters)
     return som
 
+#Função responsável por realizar a predição do modelo som
 def som_pred(som_model, data, outlier_percentage):
     model = som_model
     data = data.numpy()
